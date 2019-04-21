@@ -11,10 +11,21 @@ void processInput(GLFWwindow* window)
 {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
+	if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS)
+	{
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		std::cout << "Changed PolygonMode to GL_LINE\n";
+	}
+
+	if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS)
+	{
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		std::cout << "Changed PolygonMode to GL_FILL\n";
+	}
 }
 
 // Window resize callback
-void framebuffer_size_callback(GLFWwindow * window, int width, int height)
+void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
 	std::cout << "Changed window size to: " << width << "x" << height << std::endl;
 	glViewport(0, 0, width, height);
@@ -92,6 +103,8 @@ int main()
 		return -1;
 	}
 
+	std::cout << glGetString(GL_VERSION) << std::endl;
+
 	// ---------------------------------- SHADER COMPILATION ----------------------------------
 
 	// Load shader source
@@ -145,38 +158,47 @@ int main()
 		std::cout << "[Shader Program] Linking shader program failed.\n";
 	}
 
-	glUseProgram(shaderProgram);
-
 	// Removing shaders
 	glDeleteShader(vertexShader);
 	glDeleteShader(fragmentShader);
 
 	// ---------------------------------- DATA FOR DRAWING ----------------------------------
 
+
 	float vertices[] = {
-		-0.5f, -0.5f,
-		 0.5f, -0.5f,
-		 0.0f,  0.5f
+	-0.05f, -0.8f,   // top right
+	 0.05f, -0.8f,   // bottom right
+	-0.05f, -0.9f,   // bottom left
+	 0.05f, -0.9f   // top left 
 	};
 
-	unsigned int VertexBufferObject, VertexArrayObejct;
+	unsigned int indices[] = {  // note that we start from 0!
+		0, 1, 2,   // first triangle
+		2, 3, 1    // second triangle
+	};
+
+	unsigned int VertexBufferObject, VertexArrayObejct, ElementBufferObject;
 
 	// Generating vertex array and buffer
 	glGenVertexArrays(1, &VertexArrayObejct);
 	glGenBuffers(1, &VertexBufferObject);
+	glGenBuffers(1, &ElementBufferObject);
 
 	// Binding vertex array and buffer
 	glBindVertexArray(VertexArrayObejct);
 	glBindBuffer(GL_ARRAY_BUFFER, VertexBufferObject);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ElementBufferObject);
 
-	glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), vertices, GL_STATIC_DRAW);
+
+	glBufferData(GL_ARRAY_BUFFER, 12 * sizeof(float), vertices, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(float), indices, GL_STATIC_DRAW);
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), NULL);
 	glEnableVertexAttribArray(0);
 
 	// Unbinding
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 	// render loop
 	while (!glfwWindowShouldClose(window))
@@ -184,11 +206,12 @@ int main()
 		processInput(window);
 
 		// render
-		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+		glClearColor(0.227f, 0.274f, 0.349f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
+
+		glUseProgram(shaderProgram);
 		glBindVertexArray(VertexArrayObejct);
-		glBindBuffer(GL_ARRAY_BUFFER, VertexBufferObject);
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 		// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
 		glfwSwapBuffers(window);
