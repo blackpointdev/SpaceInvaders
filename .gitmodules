@@ -1,0 +1,3 @@
+[submodule "SpaceInvaders/vendor/GLFW"]
+	path = SpaceInvaders/vendor/GLFW
+	url = https://github.com/blackpointdev/glfw
