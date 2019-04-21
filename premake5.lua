@@ -35,7 +35,7 @@ project "SpaceInvaders"
 	{
 		"%{prj.name}/src",
 		"%{IncludeDir.GLFW}",
-		"%{IncludeDir.Glad}"	
+		"%{IncludeDir.glad}"	
 	}
 
 	links
