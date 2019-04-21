@@ -1,4 +1,5 @@
 workspace "SpaceInvaders"
+	startproject "SpaceInvaders"
 	architecture "x64"
 	
 	configurations
