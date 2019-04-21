@@ -42,7 +42,8 @@ project "SpaceInvaders"
 	links
 	{
 		"GLFW",
-		"opengl32.lib"
+		"opengl32.lib",
+		"glad"
 	}
 
 	filter "system:windows"
