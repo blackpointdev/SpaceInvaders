@@ -34,8 +34,8 @@ project "SpaceInvaders"
 	includedirs
 	{
 		"%{prj.name}/src",
-		"%{includePaths.GLFW}",
-		"%{includePaths.Glad}"	
+		"%{IncludeDir.GLFW}",
+		"%{IncludeDir.Glad}"	
 	}
 
 	links
