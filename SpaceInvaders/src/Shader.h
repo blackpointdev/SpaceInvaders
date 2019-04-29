@@ -16,9 +16,9 @@ public:
 	void Use();
 	void SetUniformF(const std::string& name, float v1, float v2, float v3, float v4) const;
 	~Shader();
-	ID id;
 
 private:
+	ID id;
 	std::string shaderPath;
 	std::string shaderSource[2];
 };
