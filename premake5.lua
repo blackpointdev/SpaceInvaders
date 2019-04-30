@@ -14,6 +14,7 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 IncludeDir = {}
 IncludeDir["GLFW"] = "SpaceInvaders/vendor/GLFW/include"
 IncludeDir["glad"] = "SpaceInvaders/vendor/glad/include"
+IncludeDir["glm"] = "SpaceInvaders/vendor/glm"
 
 include "SpaceInvaders/vendor/GLFW"
 include "SpaceInvaders/vendor/glad"
@@ -36,7 +37,8 @@ project "SpaceInvaders"
 	{
 		"%{prj.name}/src",
 		"%{IncludeDir.GLFW}",
-		"%{IncludeDir.glad}"	
+		"%{IncludeDir.glad}",
+		"%{IncludeDir}.glm"
 	}
 
 	links
